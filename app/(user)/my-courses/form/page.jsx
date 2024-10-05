@@ -5,11 +5,12 @@ import { Button } from "@nextui-org/react";
 import dynamic from "next/dynamic";
 
 import "react-quill/dist/quill.snow.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
-import { createNewCourses } from "@/lib/courses/write";
+import { createNewCourses, updateCourse } from "@/lib/courses/write";
 import { useAuth } from "@/contexts/AuthContext";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { getCourse } from "@/lib/courses/read_server";
 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
@@ -67,6 +68,29 @@ export default function Page() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
+  const searchParams = useSearchParams();
+
+  const id = searchParams.get("id");
+
+  const fetchData = async () => {
+    try {
+      const course = await getCourse({ id: id });
+      if (course) {
+        setData(course);
+      } else {
+        throw new Error("Course Not Exist");
+      }
+    } catch (error) {
+      toast.error(error?.message);
+    }
+  };
+
+  useEffect(() => {
+    if (id) {
+      fetchData();
+    }
+  }, [id]);
+
   const { user } = useAuth();
 
   const handleImage = (e) => {
@@ -103,18 +127,43 @@ export default function Page() {
     setIsLoading(false);
   };
 
+  const handleUpdate = async () => {
+    setIsLoading(true);
+    try {
+      await updateCourse({
+        data: data,
+        image: image,
+        instructorName: user?.displayName,
+        instructorEmail: user?.email,
+        instructorUid: user?.uid,
+        instructorPhotoURL: user?.photoURL,
+      });
+      toast.success("Course Is Successfully Updated");
+      router.push("/my-courses");
+    } catch (error) {
+      toast.error(error?.message);
+    }
+    setIsLoading(false);
+  };
+
   return (
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        handleCreate();
+        if (id) {
+          handleUpdate();
+        } else {
+          handleCreate();
+        }
       }}
       className="p-8 flex flex-col gap-3 bg-gray-50 min-h-screen w-full"
     >
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl">Create New Courses</h1>
+        <h1 className="text-2xl">
+          {id ? "Update Course" : "Create New Courses"}
+        </h1>
         <Button isLoading={isLoading} isDisabled={isLoading} type="submit">
-          Create
+          {id ? "Update" : "Create"}
         </Button>
       </div>
       <div className="flex flex-col gap-4 border bg-white p-5 rounded-lg">
@@ -127,7 +176,7 @@ export default function Page() {
           required
         />
         <div className="w-full border-2 border-dashed rounded-lg p-6">
-          <input onChange={handleImage} type="file" required />
+          <input onChange={handleImage} type="file" required={!id} />
         </div>
         <div className="flex flex-col gap-1">
           <label
