@@ -1,6 +1,7 @@
 import { Clapperboard, TvMinimalPlay } from "lucide-react";
 import UserLogin from "./UserLogin";
 import AuthContextProvider from "@/contexts/AuthContext";
+import Link from "next/link";
 
 export default function Header() {
   return (
@@ -10,9 +11,11 @@ export default function Header() {
         <button className="hidden md:flex items-center gap-2 px-3 py-2 text-gray-800 hover:text-indigo-800 font-semibold">
           <TvMinimalPlay /> Subscriptions
         </button>
-        <button className="hidden md:flex items-center gap-2 px-3 py-2 text-gray-800 hover:text-indigo-800 font-semibold">
-          <Clapperboard /> My Courses
-        </button>
+        <Link href="/my-courses">
+          <button className="hidden md:flex items-center gap-2 px-3 py-2 text-gray-800 hover:text-indigo-800 font-semibold">
+            <Clapperboard /> My Courses
+          </button>
+        </Link>
         <AuthContextProvider>
           <UserLogin />
         </AuthContextProvider>
