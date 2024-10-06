@@ -56,7 +56,12 @@ function CourseCard({ item }) {
         <h1 className="font-semibold">{item?.title}</h1>
         <h1 className="text-gray-600 text-sm">5 Students Enrolled</h1>
         <div className="flex gap-4 w-full mt-2">
-          <Button className="w-full">
+          <Button
+            onClick={() => {
+              router.push(`/my-courses/${item?.id}`);
+            }}
+            className="w-full"
+          >
             <Play size={13} />
             View
           </Button>
