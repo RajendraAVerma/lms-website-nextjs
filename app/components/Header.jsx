@@ -10,9 +10,11 @@ export default function Header() {
         <img className="h-10" src="/logo.png" alt="" />
       </Link>
       <div className="flex gap-3 items-center">
-        <button className="hidden md:flex items-center gap-2 px-3 py-2 text-gray-800 hover:text-indigo-800 font-semibold">
-          <TvMinimalPlay /> Subscriptions
-        </button>
+        <Link href="/subscriptions">
+          <button className="hidden md:flex items-center gap-2 px-3 py-2 text-gray-800 hover:text-indigo-800 font-semibold">
+            <TvMinimalPlay /> Subscriptions
+          </button>
+        </Link>
         <Link href="/my-courses">
           <button className="hidden md:flex items-center gap-2 px-3 py-2 text-gray-800 hover:text-indigo-800 font-semibold">
             <Clapperboard /> My Courses

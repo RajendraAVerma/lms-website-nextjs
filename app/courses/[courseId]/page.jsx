@@ -1,10 +1,22 @@
 import { getCourse } from "@/lib/courses/read_server";
 import { Gem, Languages, ShoppingBag, TrendingUp } from "lucide-react";
 import Chapters from "./components/Chapters";
-import Link from "next/link";
-import { Button } from "@nextui-org/react";
 import CourseButton from "./components/CourseButton";
 import AuthContextProvider from "@/contexts/AuthContext";
+import { Suspense } from "react";
+
+export async function generateMetadata({ params }) {
+  const { courseId } = params;
+  const course = await getCourse({ id: courseId });
+
+  return {
+    title: course?.title,
+    description: course?.shortDescription,
+    openGraph: {
+      images: [course?.imageURL],
+    },
+  };
+}
 
 export default async function Page({ params }) {
   const { courseId } = params;
@@ -34,7 +46,10 @@ export default async function Page({ params }) {
             <TrendingUp size={12} /> {course?.level}
           </h3>
         </div>
-        <div dangerouslySetInnerHTML={{ __html: course?.description }}></div>
+        <div
+          className="prose"
+          dangerouslySetInnerHTML={{ __html: course?.description }}
+        ></div>
       </div>
       <section className="flex flex-col gap-4">
         <div className="flex flex-col gap-3 w-full p-5 rounded-xl border bg-white">
@@ -51,7 +66,9 @@ export default async function Page({ params }) {
             <CourseButton course={course} />
           </AuthContextProvider>
         </div>
-        <Chapters />
+        <Suspense>
+          <Chapters courseId={course?.id} />
+        </Suspense>
       </section>
     </main>
   );

@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@nextui-org/react": "^2.4.8",
+    "@tailwindcss/typography": "^0.5.15",
+    "algoliasearch": "^5.7.0",
     "firebase": "^10.14.0",
     "firebase-admin": "^12.6.0",
     "framer-motion": "^11.11.1",

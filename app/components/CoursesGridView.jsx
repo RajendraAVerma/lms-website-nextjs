@@ -20,7 +20,7 @@ export default async function CoursesGridView() {
   );
 }
 
-function CourseCard({ course }) {
+export function CourseCard({ course }) {
   return (
     <div className="flex flex-col rounded-lg border">
       <Link href={`/courses/${course?.id}`}>

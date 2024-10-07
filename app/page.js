@@ -1,8 +1,11 @@
 import { Search } from "lucide-react";
 import Header from "./components/Header";
 import CoursesGridView from "./components/CoursesGridView";
+import SearchBar from "./components/SearchBar";
+import SearchCourses from "./components/SearchCourses";
 
-export default async function Home() {
+export default async function Home({ searchParams }) {
+  const { search } = searchParams;
   return (
     <main>
       <Header />
@@ -11,17 +14,11 @@ export default async function Home() {
           <h1 className="text-white text-xl font-bold text-center">
             All the skills you need in one place
           </h1>
-          <form className="relative">
-            <Search className="absolute top-3 left-4 text-gray-700" />
-            <input
-              type="text"
-              className="text-lg rounded-full px-6 py-2 pl-12 bg-white border shadow-lg focus:outline-none w-full md:w-96"
-              placeholder="Search For Anything"
-            />
-          </form>
+          <SearchBar />
         </div>
       </section>
-      <CoursesGridView />
+      {search && search != "" && <SearchCourses search={search} />}
+      {!search && <CoursesGridView />}
     </main>
   );
 }

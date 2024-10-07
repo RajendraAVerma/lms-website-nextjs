@@ -53,8 +53,10 @@ function CourseCard({ item }) {
         alt=""
       />
       <div className="p-3">
-        <h1 className="font-semibold">{item?.title}</h1>
-        <h1 className="text-gray-600 text-sm">5 Students Enrolled</h1>
+        <h1 className="font-semibold line-clamp-2">{item?.title}</h1>
+        <h1 className="text-gray-600 text-sm">
+          {item?.totalStudents ?? 0} Students Enrolled
+        </h1>
         <div className="flex gap-4 w-full mt-2">
           <Button
             onClick={() => {

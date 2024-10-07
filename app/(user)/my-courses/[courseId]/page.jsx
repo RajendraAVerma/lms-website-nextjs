@@ -49,7 +49,10 @@ export default function Page() {
             <TrendingUp size={12} /> {course?.level}
           </h3>
         </div>
-        <div dangerouslySetInnerHTML={{ __html: course?.description }}></div>
+        <div
+          className="prose"
+          dangerouslySetInnerHTML={{ __html: course?.description }}
+        ></div>
       </div>
       <Chapters />
     </main>

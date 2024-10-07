@@ -10,9 +10,12 @@ import {
   User,
   Button,
 } from "@nextui-org/react";
+import { useRouter } from "next/navigation";
 
 export default function UserLogin() {
   const { user, handleSignInWithGoogle, handleLogout, isLoading } = useAuth();
+
+  const router = useRouter();
 
   if (user) {
     return (
@@ -30,6 +33,12 @@ export default function UserLogin() {
             onAction={(key) => {
               if (key === "logout") {
                 handleLogout();
+              }
+              if (key === "subscriptions") {
+                router.push("/subscriptions");
+              }
+              if (key === "my_courses") {
+                router.push("/my-courses");
               }
             }}
             aria-label="Profile Actions"

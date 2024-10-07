@@ -34,3 +34,21 @@ export function useChapters({ courseId }) {
   );
   return { data, error, isLoading: data === undefined };
 }
+
+export function useChapter({ courseId, chapterId }) {
+  const { data, error } = useSWRSubscription(
+    ["chapters", courseId, chapterId],
+    ([path, courseId], { next }) => {
+      const docRef = doc(db, `courses/${courseId}/chapters/${chapterId}`);
+      const unsub = onSnapshot(
+        docRef,
+        (snapshot) => {
+          next(null, !snapshot.exists() ? null : snapshot.data());
+        },
+        (error) => next(error, null)
+      );
+      return () => unsub();
+    }
+  );
+  return { data, error, isLoading: data === undefined };
+}

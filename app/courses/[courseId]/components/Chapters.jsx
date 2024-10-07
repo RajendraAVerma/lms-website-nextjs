@@ -1,12 +1,18 @@
-"use client";
-
-import { useChapters } from "@/lib/courses/chapter/read";
+import { adminDB } from "@/lib/firebase_admin";
 import { Image, Play, Youtube } from "lucide-react";
-import { useParams } from "next/navigation";
 
-export default function Chapters() {
-  const { courseId } = useParams();
-  const { data: chapters } = useChapters({ courseId: courseId });
+const getChapter = async ({ courseId }) => {
+  const res = await adminDB
+    .collection(`/courses/${courseId}/chapters`)
+    .orderBy("timestampCreate", "desc")
+    .get();
+  return res.docs.map((item) => {
+    return item.data();
+  });
+};
+
+export default async function Chapters({ courseId }) {
+  const chapters = await getChapter({ courseId: courseId });
   return (
     <section className="flex flex-col gap-3 w-full md:w-[350px] p-5 rounded-xl border bg-white">
       <div className="flex items-center justify-between">
