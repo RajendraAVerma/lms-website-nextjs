@@ -1,5 +1,6 @@
 import { admin, adminDB } from "@/lib/firebase_admin";
 import { Play } from "lucide-react";
+import Link from "next/link";
 
 const getPayment = async ({ checkout_id }) => {
   const res = await adminDB
@@ -46,9 +47,11 @@ export default async function Page({ searchParams }) {
   return (
     <main className="p-8 py-20 flex flex-col w-full gap-3 justify-center items-center">
       <h1 className="text-3xl font-semibold">Payment is Success</h1>
-      <button className="flex gap-2 items-center bg-indigo-700 rounded-xl text-white px-5 py-2 text-sm font-semibold">
-        <Play size={14} /> Learn
-      </button>
+      <Link href={`/subscriptions/${courseId}`}>
+        <button className="flex gap-2 items-center bg-indigo-700 rounded-xl text-white px-5 py-2 text-sm font-semibold">
+          <Play size={14} /> Learn
+        </button>
+      </Link>
     </main>
   );
 }
