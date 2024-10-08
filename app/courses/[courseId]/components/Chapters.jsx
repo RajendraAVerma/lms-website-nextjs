@@ -4,7 +4,7 @@ import { Image, Play, Youtube } from "lucide-react";
 const getChapter = async ({ courseId }) => {
   const res = await adminDB
     .collection(`/courses/${courseId}/chapters`)
-    .orderBy("timestampCreate", "desc")
+    .orderBy("timestampCreate", "asc")
     .get();
   return res.docs.map((item) => {
     return item.data();
